@@ -11,7 +11,6 @@ const STORAGE_KEY = 'feedback-form-state';
 const formData = {};
 
 
-
 refs.form.addEventListener('submit', onFormSubmit)
 refs.form.addEventListener('input', throttle(onTextInput, 500))
 
