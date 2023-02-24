@@ -15,7 +15,7 @@ refs.form.addEventListener('submit', onFormSubmit)
 refs.form.addEventListener('input', throttle(onTextInput, 500))
 
 
-populateTextarea()
+formFill()
 
 function onFormSubmit(e) {
     e.preventDefault()
@@ -39,14 +39,14 @@ function onTextInput(e) {
 
 }
 
-function populateTextarea(e) {
+function formFill(e) {
     const saveMessage = localStorage.getItem(STORAGE_KEY)
     if(saveMessage) {
 
         const result = JSON.parse(saveMessage)
 
-        refs.input.value = result
-        refs.textarea.value = result
+        refs.email.value = result.email
+        refs.textarea.value = result.message
     }
-
+return
 }
