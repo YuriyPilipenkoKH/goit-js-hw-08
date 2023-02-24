@@ -48,5 +48,5 @@ function formFill(e) {
         refs.email.value = result.email
         refs.textarea.value = result.message
     }
-return
+
 }
