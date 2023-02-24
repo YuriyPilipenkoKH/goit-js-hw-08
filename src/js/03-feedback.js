@@ -1,10 +1,5 @@
+import throttle from 'lodash.throttle';
 
-
-console.log('localStorage');
-// localStorage.setItem('data','dart')
-
-const mail = document.querySelector('form.feedback-form')
-console.log(mail);
 const refs = {
     form: document.querySelector('form.feedback-form'),
     textarea: document.querySelector('form [name="message"]'),
@@ -12,52 +7,47 @@ const refs = {
 }
 
 
-const EMAIL_KEY = 'feedback-email'
-const MESSAGE_KEY = 'feedback-msg'
+const STORAGE_KEY = 'feedback-form-state';
+const formData = {};
 
-console.log(localStorage);
+
 
 refs.form.addEventListener('submit', onFormSubmit)
-refs.email.addEventListener('input', onMailInput)
-refs.textarea.addEventListener('input', onTextInput)
+refs.form.addEventListener('input', throttle(onTextInput, 500))
+
 
 populateTextarea()
 
 function onFormSubmit(e) {
     e.preventDefault()
-     
+
+    const mail = refs.email.value
+    const text = refs.textarea.value
+    if(!mail  || !text) {
+        alert('Type some text');
+    }
+
     e.currentTarget.reset()
-    localStorage.removeItem(EMAIL_KEY)
-    localStorage.removeItem(MESSAGE_KEY)
+    localStorage.removeItem(STORAGE_KEY)
+   
 } 
 
-function onMailInput(e) {
-    const message = e.currentTarget.value
-    localStorage.setItem(EMAIL_KEY,message)
-
-    console.log(message);
-}
-
 function onTextInput(e) {
-    const message = e.currentTarget.value
-    localStorage.setItem(MESSAGE_KEY,message)
+    formData[e.target.name] = e.target.value;
+    const inputData = JSON.stringify(formData);
+  
+    localStorage.setItem(STORAGE_KEY, inputData);
 
-    console.log(message);
 }
 
 function populateTextarea(e) {
-    const saveMessage = localStorage.getItem(MESSAGE_KEY)
+    const saveMessage = localStorage.getItem(STORAGE_KEY)
     if(saveMessage) {
-        console.log(saveMessage);
 
-        refs.textarea.value = saveMessage
-    }
+        const result = JSON.parse(saveMessage)
 
-    const saveEmail = localStorage.getItem(EMAIL_KEY)
-    if(saveEmail) {
-        console.log(saveEmail);
-
-        refs.email.value = saveEmail
+        refs.input.value = result
+        refs.textarea.value = result
     }
 
 }
